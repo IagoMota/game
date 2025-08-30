@@ -1,0 +1,17 @@
+Rendering lists order of iteration(when rendering):
+1- background
+2- characters and stats(health, mana, etc...)
+3- projectiles
+
+every class of entities, background and projectiles
+should have a "draw()" method that can be called
+to draw it;
+
+whenever a class is instantiated, its constructor
+should push a reference of its object into the
+apropriate rendering list(array).
+
+the render function should iterate through 
+the different rendering lists following
+the rendering lists order and calling the "draw()"
+method on every list item;
