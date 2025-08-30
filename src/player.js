@@ -14,10 +14,12 @@ class Player {
         this.bindControls()
     }
 
+    collide =()=>{
+        console.log("oopsie")
+    }
     draw = () => {
         this.renderer.drawSquare(this.x, this.y, this.w, this.h, this.color);
     }
-
 
     bindControls = () => {
         let facing = 'right';
@@ -112,8 +114,8 @@ class Player {
                     if (pressed.space) return
                     pressed.space = true
                     this.int = setInterval(() => {
-                        let properX = facing === 'left' ? this.x-10 : facing === 'right' ? this.x + this.w +10: this.x + (this.w / 2)
-                        let properY = facing === 'up' ? this.y-10 : facing === 'down' ? this.y + this.h +10: this.y + (this.h / 2)
+                        let properX = facing === 'left' ? this.x - 20 : facing === 'right' ? this.x + this.w + 20 : this.x + (this.w / 2)
+                        let properY = facing === 'up' ? this.y - 20 : facing === 'down' ? this.y + this.h + 20 : this.y + (this.h / 2)
                         new Projectile(properX, properY, facing, 25, this.renderer);
                     }, 50);
                     break;

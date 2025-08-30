@@ -10,38 +10,28 @@ class Projectile {
         renderer.projectiles.push(this);
         new Audio('./audio/pew.mp3').play();
     }
-    draw = () => {
-        this.renderer.drawCircle(this.x, this.y, this.radius, 'red');        
-        this.move();
+    collide = ()=>{
+        this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
     }
-    move = () => {        
+    draw = () => {
+        this.renderer.drawCircle(this.x, this.y, this.radius, 'red');
+        if (this.x > 0 && this.x < window.innerWidth && this.y > 0 && this.y < window.innerHeight) {
+            return this.move();
+        }
+        this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
+    }
+    move = () => {
         switch (this.facing) {
             case 'up':
-                if (this.y - this.speed < 0) {
-                    this.renderer.projectiles = this.renderer.projectiles.filter(p => p !== this);
-                    return;
-                }
                 this.y -= this.speed;
                 break;
             case 'down':
-                if (this.y + this.speed > this.renderer.height) {
-                    this.renderer.projectiles = this.renderer.projectiles.filter(p => p !== this);
-                    return;
-                }
                 this.y += this.speed;
                 break;
             case 'left':
-                if (this.x - this.speed < 0) {
-                    this.renderer.projectiles = this.renderer.projectiles.filter(p => p !== this);
-                    return;
-                }
                 this.x -= this.speed;
                 break;
             case 'right':
-                if (this.x + this.speed > this.renderer.width) {
-                    this.renderer.projectiles = this.renderer.projectiles.filter(p => p !== this);
-                    return;
-                }
                 this.x += this.speed;
                 break;
 

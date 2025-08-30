@@ -5,6 +5,7 @@ class Renderer {
         this.canvas.height = window.innerHeight;
     }
 
+    frame = 0;
     background = []
     characters = []
     projectiles = []
@@ -25,12 +26,27 @@ class Renderer {
     };
 
     paint = () => {
-        this.background.forEach(i=>i.draw());
-        this.characters.forEach(i=>i.draw());
-        this.projectiles.forEach(i=>i.draw());
+        this.frame++
+        this.background.forEach(i => i.draw(this.frame));
+        this.characters.forEach(i => i.draw(this.frame));
+        this.projectiles.forEach(i => i.draw(this.frame));
     }
 
-    collide = ()=>{}
+    collide = () => {
+        this.projectiles.forEach(proj => {
+            let hit = this.characters.filter(char => {
+                const closestX = Math.max(char.x, Math.min(proj.x, char.x + char.w));
+                const closestY = Math.max(char.y, Math.min(proj.y, char.y + char.h));
+
+                const dx = proj.x - closestX;
+                const dy = proj.y - closestY;
+
+                return (dx * dx + dy * dy) <= (proj.radius * proj.radius);
+            });
+            if (hit.length) proj.collide()
+            hit.forEach(char => char.collide());
+        });
+    };
     render = () => {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.collide();
