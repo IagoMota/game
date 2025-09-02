@@ -18,6 +18,7 @@ class Enemy {
     collide = () => {
         console.log("colided")
         this.renderer.characters = this.renderer.characters.filter(p => p != this)
+        new Audio("../audio/ship_explosion.mp3").play()
     }
     move = () => {
         if (Math.random() * 1 > 0.5) this.x += this.speed;

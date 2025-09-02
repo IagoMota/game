@@ -9,19 +9,18 @@ class Player {
         this.h = h
         this.color = 'green'
         this.speed = 10
-
+        this.projectileRadius = 5;
         renderer.characters.push(this);
-        this.bindControls()
     }
 
-    collide =()=>{
+    collide = () => {
         console.log("oopsie")
     }
     draw = () => {
         this.renderer.drawSquare(this.x, this.y, this.w, this.h, this.color);
     }
 
-    bindControls = () => {
+    init = () => {
         let facing = 'right';
         const pressed = {
             w: false,
@@ -114,9 +113,10 @@ class Player {
                     if (pressed.space) return
                     pressed.space = true
                     this.int = setInterval(() => {
-                        let properX = facing === 'left' ? this.x - 20 : facing === 'right' ? this.x + this.w + 20 : this.x + (this.w / 2)
-                        let properY = facing === 'up' ? this.y - 20 : facing === 'down' ? this.y + this.h + 20 : this.y + (this.h / 2)
-                        new Projectile(properX, properY, facing, 25, this.renderer);
+                        let properX = facing === 'left' ? this.x - 25 : facing === 'right' ? this.x + this.w + 25 : this.x + (this.w / 2)
+                        let properY = facing === 'up' ? this.y - 25 : facing === 'down' ? this.y + this.h + 25 : this.y + (this.h / 2)
+                        new Projectile(properX, properY, facing, 25, this.renderer, this.projectileRadius);
+                        console.log(this.projectileRadius)
                     }, 50);
                     break;
                 }
@@ -171,10 +171,22 @@ class Player {
                 case ' ': {
                     clearInterval(this.int)
                     pressed.space = false
-                    break;
                 }
             }
         })
+        window.addEventListener("wheel", (event) => {
+            if (event.deltaY < 0 && this.projectileRadius < 19) {
+                this.projectileRadius++
+                if (this.speed > 4) this.speed--
+            }
+            if (event.deltaY > 0 && this.projectileRadius > 1) {
+                this.projectileRadius--
+                if (this.speed < 15) this.speed++
+            }
+
+
+
+        }, { passive: false });
     }
 }
 

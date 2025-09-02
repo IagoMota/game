@@ -1,16 +1,16 @@
 class Projectile {
-    constructor(x, y, facing, speed, renderer) {
+    constructor(x, y, facing, speed, renderer, radius = 5) {
         this.x = x;
         this.y = y;
         this.facing = facing;
         this.speed = speed;
         this.renderer = renderer;
-        this.radius = 5;
+        this.radius = radius;
 
         renderer.projectiles.push(this);
         new Audio('./audio/pew.mp3').play();
     }
-    collide = ()=>{
+    collide = () => {
         this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
     }
     draw = () => {
@@ -20,6 +20,8 @@ class Projectile {
         }
         this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
     }
+
+    
     move = () => {
         switch (this.facing) {
             case 'up':

@@ -1,8 +1,6 @@
 class Renderer {
     constructor() {
         this.render()
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
     }
 
     frame = 0;
@@ -47,6 +45,7 @@ class Renderer {
             hit.forEach(char => char.collide());
         });
     };
+    
     render = () => {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.collide();
@@ -54,6 +53,15 @@ class Renderer {
         window.requestAnimationFrame(this.render);
     };
 
+    init = () => {
+        this.canvas.style.position = 'fixed';
+        this.canvas.style.top = '0';
+        this.canvas.style.left = '0';
+        this.canvas.style.display = 'block';
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        window.addEventListener('resize', this.init);
+    }
 }
 
 export default Renderer;
