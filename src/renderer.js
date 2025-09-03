@@ -1,6 +1,7 @@
 class Renderer {
-    constructor() {
-        this.render()
+    constructor(cellSize = 200) {
+        this.cellSize = cellSize;
+        this.grid = new Map();
     }
 
     frame = 0;
@@ -30,9 +31,50 @@ class Renderer {
         this.projectiles.forEach(i => i.draw(this.frame));
     }
 
+    getCellKey = (x, y) => {
+        const cellX = Math.floor(x / this.cellSize);
+        const cellY = Math.floor(y / this.cellSize);
+        return `${cellX},${cellY}`;
+    };
+
+    buildGrid = () => {
+        this.grid.clear();
+
+        const addToGrid = (obj, listName) => {
+            const key = this.getCellKey(obj.x, obj.y);
+            if (!this.grid.has(key)) {
+                this.grid.set(key, { projectiles: [], characters: [] });
+            }
+            this.grid.get(key)[listName].push(obj);
+        };
+
+        this.characters.forEach(char => addToGrid(char, "characters"));
+        this.projectiles.forEach(proj => addToGrid(proj, "projectiles"));
+    };
+
+    getNearbyCharacters = (proj) => {
+        const nearby = [];
+        const cellX = Math.floor(proj.x / this.cellSize);
+        const cellY = Math.floor(proj.y / this.cellSize);
+
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                const key = `${cellX + dx},${cellY + dy}`;
+                const cell = this.grid.get(key);
+                if (cell && cell.characters.length) {
+                    nearby.push(...cell.characters);
+                }
+            }
+        }
+        return nearby;
+    };
+
+
     collide = () => {
         this.projectiles.forEach(proj => {
-            let hit = this.characters.filter(char => {
+            const candidates = this.getNearbyCharacters(proj);
+
+            const hit = candidates.filter(char => {
                 const closestX = Math.max(char.x, Math.min(proj.x, char.x + char.w));
                 const closestY = Math.max(char.y, Math.min(proj.y, char.y + char.h));
 
@@ -41,19 +83,24 @@ class Renderer {
 
                 return (dx * dx + dy * dy) <= (proj.radius * proj.radius);
             });
-            if (hit.length) proj.collide()
+
+            if (hit.length) proj.collide();
             hit.forEach(char => char.collide());
         });
     };
-    
+
+
     render = () => {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.buildGrid();
         this.collide();
         this.paint();
         window.requestAnimationFrame(this.render);
     };
 
+
     init = () => {
+        this.render()
         this.canvas.style.position = 'fixed';
         this.canvas.style.top = '0';
         this.canvas.style.left = '0';

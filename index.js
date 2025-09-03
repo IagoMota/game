@@ -9,7 +9,7 @@ const menu = new MainMenu(renderer, player);
 
 let count = 0;
 setInterval(() => {
-    if (count > 50) return;
+    if (count > 10000) return;
     new Enemy(renderer);
     count++
 }, 10);

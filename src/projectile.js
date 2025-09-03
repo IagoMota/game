@@ -11,7 +11,9 @@ class Projectile {
         new Audio('./audio/pew.mp3').play();
     }
     collide = () => {
-        this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
+        if (this.radius <= 10) {
+            this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
+        }
     }
     draw = () => {
         this.renderer.drawCircle(this.x, this.y, this.radius, 'red');
@@ -21,7 +23,7 @@ class Projectile {
         this.renderer.projectiles = this.renderer.projectiles.filter(p => p != this)
     }
 
-    
+
     move = () => {
         switch (this.facing) {
             case 'up':
