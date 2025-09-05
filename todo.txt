@@ -1,0 +1,9 @@
+1- make enemies spawn with some cool portal effect.
+2- make enemies fight back.
+3- make different types of weapons.
+4- make different types of enemies.
+5- make enemies have sprites.
+6- make background stars.
+7- make death animations.
+8- make projectiles have damage values.
+9- add health to entities.

@@ -43,14 +43,12 @@ export default class MainMenu {
             }
         });
     };
-
     killSong = () => {
         this.menuSong.pause();
         this.menuSong.src = '';
         this.menuSong.load();
         this.menuSong = null;
     }
-
     bindMenuButtons = () => {
         this.startButton.addEventListener('click', () => {
             new Audio('../audio/menu_click.mp3').play()

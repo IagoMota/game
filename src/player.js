@@ -10,6 +10,8 @@ class Player {
         this.color = 'green'
         this.speed = 10
         this.projectileRadius = 5;
+        this.sprite = new Image()
+        this.sprite.src = '../pictures/player/full_health.png'        
         renderer.characters.push(this);
     }
 
@@ -17,7 +19,7 @@ class Player {
         console.log("oopsie")
     }
     draw = () => {
-        this.renderer.drawSquare(this.x, this.y, this.w, this.h, this.color);
+        this.renderer.drawSimpleImage(this.sprite, this.x, this.y, this.w, this.h);
     }
 
     init = () => {

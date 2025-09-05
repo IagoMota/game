@@ -7,14 +7,16 @@ class Enemy {
         this.h = 50;
         this.color = '#fff'
         this.speed = 10
-
+        this.sprite = new Image()
+        this.sprite.src = '../pictures/enemies/battlecruiser.png'
         renderer.characters.push(this);
     }
 
-    draw = (frame) => {
-        if (frame % 20 == 0) this.move();
-        this.renderer.drawSquare(this.x, this.y, this.w, this.h, this.color);
+    draw = (frame) => {     
+        if (frame % 20 == 0) this.move();     
+        this.renderer.drawSimpleImage(this.sprite, this.x, this.y, this.w, this.h);
     }
+
     collide = () => {
         console.log("colided")
         this.renderer.characters = this.renderer.characters.filter(p => p != this)

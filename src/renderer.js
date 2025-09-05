@@ -9,6 +9,7 @@ class Renderer {
     characters = []
     projectiles = []
 
+
     canvas = document.querySelector("canvas");
     ctx = this.canvas.getContext("2d");
 
@@ -24,6 +25,16 @@ class Renderer {
         this.ctx.fillRect(x, y, w, h);
     };
 
+    drawComplexImage = (img, dx, dy, dw, dh, sx, sy, sw, sh,) => {
+        this.ctx.drawImage(
+            img,
+            dx, dy, dw, dh,
+            sx, sy, sw, sh
+        );
+    }
+    drawSimpleImage = (img, x, y, w, h) => {
+        this.ctx.drawImage(img, x, y, w, h);
+    };
     paint = () => {
         this.frame++
         this.background.forEach(i => i.draw(this.frame));
