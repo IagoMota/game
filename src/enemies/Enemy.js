@@ -1,14 +1,14 @@
 class Enemy {
-    constructor(renderer) {
+    constructor(renderer, src) {
         this.renderer = renderer;
         this.x = Math.random() * window.innerWidth;
         this.y = Math.random() * window.innerHeight;
-        this.w = 50;
-        this.h = 50;
+        this.w = 24;
+        this.h = 22;
         this.color = '#fff'
         this.speed = 10
         this.sprite = new Image()
-        this.sprite.src = '../pictures/enemies/battlecruiser.png'
+        this.sprite.src = src
         renderer.characters.push(this);
     }
 

@@ -11,9 +11,12 @@ class Player {
         this.speed = 10
         this.projectileRadius = 5;
         this.sprite = new Image()
-        this.sprite.src = '../pictures/player/full_health.png'        
+        this.sprite.src = '../pictures/player/fhd.png'
         renderer.characters.push(this);
     }
+
+    attackDelay = 50;
+    firingInterval;
 
     collide = () => {
         console.log("oopsie")
@@ -21,7 +24,6 @@ class Player {
     draw = () => {
         this.renderer.drawSimpleImage(this.sprite, this.x, this.y, this.w, this.h);
     }
-
     init = () => {
         let facing = 'right';
         const pressed = {
@@ -54,10 +56,14 @@ class Player {
         };
         const updateFacingFromStack = () => {
             const last = dirStack[dirStack.length - 1];
-            if (last) facing = keyToFacing[last];
+            if (last) {
+                facing = keyToFacing[last];
+                this.sprite.src = `../pictures/player/fh${last}.png`
+            }
+
         };
 
-        window.addEventListener('keydown', (e) => {
+        window.addEventListener('keydown', async (e) => {
             switch (e.key) {
                 case 'd': {
                     if (pressed.d) return
@@ -114,12 +120,12 @@ class Player {
                 case ' ': {
                     if (pressed.space) return
                     pressed.space = true
-                    this.int = setInterval(() => {
+                    while (pressed.space) {
                         let properX = facing === 'left' ? this.x - 25 : facing === 'right' ? this.x + this.w + 25 : this.x + (this.w / 2)
                         let properY = facing === 'up' ? this.y - 25 : facing === 'down' ? this.y + this.h + 25 : this.y + (this.h / 2)
                         new Projectile(properX, properY, facing, 25, this.renderer, this.projectileRadius);
-                        console.log(this.projectileRadius)
-                    }, 50);
+                        await new Promise(res => setInterval(res, this.attackDelay));
+                    }
                     break;
                 }
             }
@@ -179,11 +185,22 @@ class Player {
         window.addEventListener("wheel", (event) => {
             if (event.deltaY < 0 && this.projectileRadius < 19) {
                 this.projectileRadius++
-                if (this.speed > 4) this.speed--
+                if (this.speed > 4) {
+                    this.speed--
+                    if (this.attackDelay < 175) {
+                    console.log(this.attackDelay)
+                    this.attackDelay += 10
+                }
+                }
+                
             }
             if (event.deltaY > 0 && this.projectileRadius > 1) {
                 this.projectileRadius--
-                if (this.speed < 15) this.speed++
+                if (this.speed < 15) {
+                    this.speed++
+                    if (this.attackDelay > 40) this.attackDelay -= 10
+                }
+                
             }
 
 

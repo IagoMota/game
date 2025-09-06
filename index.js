@@ -1,6 +1,6 @@
 import Renderer from "./src/renderer.js";
 import Player from "./src/player.js";
-import Enemy from "./src/enemy.js";
+import Fighter from "./src/enemies/fighter.js"
 import MainMenu from "./src/menu.js";
 
 const renderer = new Renderer();
@@ -10,6 +10,6 @@ const menu = new MainMenu(renderer, player);
 let count = 0;
 setInterval(() => {
     if (count > 20) return;
-    new Enemy(renderer);
+    new Fighter(renderer);
     count++
 }, 10);
